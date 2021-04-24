@@ -6,12 +6,15 @@
   "dependencies": {
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.12.5"
   },
   "devDependencies": {
     "eslint": "^7.25.0"
   },
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "lint": "npx eslint"
   },
   "repository": {
