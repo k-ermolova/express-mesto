@@ -1,0 +1,27 @@
+{
+  "name": "express-mesto",
+  "version": "1.0.0",
+  "description": "yandex praktikum project",
+  "main": "app.js",
+  "dependencies": {
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.25.0"
+  },
+  "scripts": {
+    "lint": "npx eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k-ermolova/express-mesto.git"
+  },
+  "author": "Ermolova Ksenia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k-ermolova/express-mesto/issues"
+  },
+  "homepage": "https://github.com/k-ermolova/express-mesto#readme"
+}
