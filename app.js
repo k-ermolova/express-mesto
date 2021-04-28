@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-const userRoutes = require('./routes/users');
+const usersRoutes = require('./routes/users');
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(express.json());
-app.use(userRoutes);
+app.use(usersRoutes);
 app.use((req, res, next) => {
   req.user = {
     _id: '608948b6a58010216020c0ed'

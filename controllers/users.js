@@ -7,15 +7,35 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
-  User.findById(req.params.id)
+  User.findById(req.params.userId)
     .then(user => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.postUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  console.log({ name, about, avatar });
+
   User.create({ name, about, avatar })
     .then(user => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
+
+module.exports.updateProfile = (req, res) => {
+  const { name, about } = req.body;
+
+  User.findByIdAndUpdate(
+    req.params.userId,
+    { name, about },
+    { new: true }
+  )
+};
+
+module.exports.updateAvatar = (req, res) => {
+  const { avatar } = req.body;
+
+  User.findByIdAndUpdate(
+    req.params.userId,
+    { avatar },
+    { new: true }
+  )
+}
