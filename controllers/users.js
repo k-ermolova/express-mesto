@@ -58,6 +58,7 @@ module.exports.updateProfile = (req, res) => {
     { name, about },
     { new: true, runValidators: true },
   )
+    .orFail(new Error('NotFound'))
     .then((user) => {
       res.send(user);
     })
@@ -86,6 +87,7 @@ module.exports.updateAvatar = (req, res) => {
     { avatar },
     { new: true, runValidators: true },
   )
+    .orFail(new Error('NotFound'))
     .then((user) => {
       res.send(user);
     })
