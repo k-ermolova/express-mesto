@@ -2,7 +2,7 @@ const Card = require('../models/card');
 
 module.exports.getCards = (req, res) => {
   Card.find({}, { __v: 0 })
-    .then(cards => res.send(cards))
+    .then((cards) => res.send(cards))
     .catch(() => res
       .status(500)
       .send({ message: 'На сервере произошла ошибка.' }));
@@ -14,7 +14,7 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner })
-    .then(card => {
+    .then((card) => {
       if (card) {
         res.send(card);
       } else {
@@ -22,17 +22,16 @@ module.exports.createCard = (req, res) => {
           .status(400)
           .send({ message: 'Переданы некорректные данные' });
       }
-
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res
           .status(400)
-          .send({ message: 'Переданы некорректные данные при создании карточки.' })
+          .send({ message: 'Переданы некорректные данные при создании карточки.' });
       } else {
         res
           .status(500)
-          .send({ message: 'На сервере произошла ошибка.' })
+          .send({ message: 'На сервере произошла ошибка.' });
       }
     });
 };
@@ -40,7 +39,7 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(
     req.params.cardId,
-    { new: true }
+    { new: true },
   )
     .then((card) => {
       if (card) {
@@ -51,10 +50,9 @@ module.exports.deleteCard = (req, res) => {
           .send({ message: 'Карточка с указанным _id не найдена' });
       }
     })
-    .catch((err) => res
+    .catch(() => res
       .status(500)
-      .send({ message: 'На сервере произошла ошибка.' })
-    );
+      .send({ message: 'На сервере произошла ошибка.' }));
 };
 
 module.exports.likeCard = (req, res) => {
@@ -63,21 +61,21 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then(card => {
+    .then((card) => {
       if (card) {
         res.send(card);
       } else {
         res
           .status(400)
-          .send({ message: 'Переданы некорректные данные для постановки лайка.' })
+          .send({ message: 'Переданы некорректные данные для постановки лайка.' });
       }
     })
-    .catch((err) => {
+    .catch(() => {
       res
         .status(500)
-        .send({ message: 'На сервере произошла ошибка.' })
+        .send({ message: 'На сервере произошла ошибка.' });
     });
-}
+};
 
 module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
@@ -85,19 +83,18 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then(card => {
+    .then((card) => {
       if (card) {
         res.send(card);
       } else {
         res
           .status(400)
-          .send({ message: 'Переданы некорректные данные для снятия лайка.' })
+          .send({ message: 'Переданы некорректные данные для снятия лайка.' });
       }
     })
-    .catch((err) => {
+    .catch(() => {
       res
         .status(500)
-        .send({ message: 'На сервере произошла ошибка.' })
-    }
-    );
-}
+        .send({ message: 'На сервере произошла ошибка.' });
+    });
+};
