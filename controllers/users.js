@@ -67,7 +67,7 @@ module.exports.updateProfile = (req, res) => {
         res
           .status(400)
           .send({ message: 'Переданы некорректные данные при обновлении профиля.' });
-      } else if (err.name === 'NotFound') {
+      } else if (err.name === err.message) {
         res
           .status(404)
           .send({ message: 'Пользователь по указанному _id не найден.' });
@@ -96,7 +96,7 @@ module.exports.updateAvatar = (req, res) => {
         res
           .status(400)
           .send({ message: 'Переданы некорректные данные при обновлении аватара.' });
-      } else if (err.name === 'NotFound') {
+      } else if (err.name === err.message) {
         res
           .status(404)
           .send({ message: 'Пользователь по указанному _id не найден.' });
