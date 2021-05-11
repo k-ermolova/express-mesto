@@ -8,6 +8,7 @@ const app = express();
 const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 const notFoundRoutes = require('./routes/notFound');
+const { login, createUser } = require('./controllers/users');
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -28,5 +29,8 @@ app.use((req, res, next) => {
 app.use('/users', usersRoutes);
 app.use('/cards', cardsRoutes);
 app.use('*', notFoundRoutes);
+
+app.post('/signin', login);
+app.post('signup', createUser);
 
 app.listen(PORT);
