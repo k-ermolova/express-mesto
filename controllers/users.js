@@ -2,12 +2,38 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
+let userId;
+
 module.exports.getUsers = (req, res) => {
   User.find({}, { __v: 0 })
     .then((users) => res.send(users))
     .catch(() => res
       .status(500)
       .send({ message: 'На сервере произошла ошибка.' }));
+};
+
+module.exports.getCurrentUser = (req, res) => {
+  User.findById(userId, { __v: 0 })
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        res
+          .status(404)
+          .send({ message: 'Пользователь по указанному _id не найден.' });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res
+          .status(400)
+          .send({ message: 'Передан невалидный _id.' });
+      } else {
+        res
+          .status(500)
+          .send({ message: 'На сервере произошла ошибка.' });
+      }
+    });
 };
 
 module.exports.getUserById = (req, res) => {
@@ -120,7 +146,8 @@ module.exports.login = (req, res) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, { expiresIn: '7d' });
+      userId = user._id;
+      const token = jwt.sign({ _id: userId }, 'super-strong-secret', { expiresIn: '7d' });
 
       res.send({ token });
     })

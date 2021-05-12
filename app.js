@@ -18,19 +18,11 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '608948b6a58010216020c0ed',
-  };
-
-  next();
-});
+app.post('/signin', login);
+app.post('/signup', createUser);
 
 app.use('/users', usersRoutes);
 app.use('/cards', cardsRoutes);
 app.use('*', notFoundRoutes);
-
-app.post('/signin', login);
-app.post('signup', createUser);
 
 app.listen(PORT);
