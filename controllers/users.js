@@ -2,8 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-let userId;
-
 module.exports.getUsers = (req, res) => {
   User.find({}, { __v: 0 })
     .then((users) => res.send(users))
@@ -13,7 +11,7 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getCurrentUser = (req, res) => {
-  User.findById(userId, { __v: 0 })
+  User.findById(req.user._id, { __v: 0 })
     .then((user) => {
       if (user) {
         res.send(user);
@@ -75,6 +73,10 @@ module.exports.createUser = (req, res) => {
         res
           .status(400)
           .send({ message: 'Переданы некорректные данные при создании пользователя.' });
+      } else if (err.name === 'MongoError' && err.code === 11000) {
+        res
+          .status(409)
+          .send({ message: 'Пользовать с указанным email уже существует.' });
       } else {
         res
           .status(500)
@@ -146,8 +148,7 @@ module.exports.login = (req, res) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      userId = user._id;
-      const token = jwt.sign({ _id: userId }, 'super-strong-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
 
       res.send({ token });
     })
