@@ -30,4 +30,9 @@ app.use('/users', usersRoutes);
 app.use('/cards', cardsRoutes);
 app.use('*', notFoundRoutes);
 
+app.use((err, req, res, next) => {
+  res.status(err.statusCode).send({ message: err.message });
+  next();
+});
+
 app.listen(PORT);
