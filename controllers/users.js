@@ -66,7 +66,7 @@ module.exports.createUser = (req, res, next) => {
   bcrypt.hash(password, SALT_ROUNDS)
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
-    }))
+    }, { runValidators: true }))
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -112,6 +112,7 @@ module.exports.updateAvatar = (req, res, next) => {
     { avatar },
     { new: true, runValidators: true },
   )
+    .select('-__v')
     .orFail(new Error('NotFound'))
     .then((user) => {
       res.send(user);

@@ -34,11 +34,10 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-      if (String(card.owner) !== req.user._id) {
-        throw new ForbiddenError('Невозможно удалить чужую карточку');
+      if (card && String(card.owner) !== req.user._id) {
+        next(new ForbiddenError('Невозможно удалить чужую карточку.'));
       }
     })
-    .catch(next)
     .then((card) => {
       if (card) {
         res.send(card);
@@ -47,7 +46,7 @@ module.exports.deleteCard = (req, res, next) => {
           { new: true },
         );
       } else {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        next(new NotFoundError('Карточка с указанным _id не найдена.'));
       }
     })
     .catch((err) => {
@@ -70,7 +69,7 @@ module.exports.likeCard = (req, res, next) => {
       if (card) {
         res.send(card);
       } else {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        next(new NotFoundError('Карточка с указанным _id не найдена.'));
       }
     })
     .catch((err) => {
@@ -93,7 +92,7 @@ module.exports.dislikeCard = (req, res, next) => {
       if (card) {
         res.send(card);
       } else {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        next(new NotFoundError('Карточка с указанным _id не найдена.'));
       }
     })
     .catch((err) => {
