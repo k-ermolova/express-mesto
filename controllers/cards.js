@@ -6,7 +6,7 @@ const InternalServerError = require('../errors/internal-server-error');
 const ForbiddenError = require('../errors/forbidden-err');
 
 module.exports.getCards = (req, res, next) => {
-  Card.find({}, { __v: 0 })
+  Card.find({})
     .then((cards) => res.send(cards))
     .catch(() => {
       throw new InternalServerError('На сервере произошла ошибка.');
@@ -68,8 +68,9 @@ module.exports.likeCard = (req, res, next) => {
     .then((card) => {
       if (card) {
         res.send(card);
+      } else {
+        next(new NotFoundError('Карточка с указанным _id не найдена.'));
       }
-      next(new NotFoundError('Карточка с указанным _id не найдена.'));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -90,8 +91,9 @@ module.exports.dislikeCard = (req, res, next) => {
     .then((card) => {
       if (card) {
         res.send(card);
+      } else {
+        next(new NotFoundError('Карточка с указанным _id не найдена.'));
       }
-      next(new NotFoundError('Карточка с указанным _id не найдена.'));
     })
     .catch((err) => {
       if (err.name === 'CastError') {

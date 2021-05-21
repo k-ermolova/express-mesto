@@ -36,7 +36,16 @@ module.exports.userInfoValidator = celebrate({
 
 module.exports.avatarValidator = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required(),
+    avatar: Joi.string().required().custom(
+      (value, helpers) => {
+        if (validator.isUrl(value, {
+          require_protocol: true,
+        })) {
+          return value;
+        }
+        return helpers.message('Некорректный формат ссылки.');
+      },
+    ),
   }),
 });
 
