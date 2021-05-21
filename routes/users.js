@@ -7,7 +7,7 @@ const { userInfoValidator, avatarValidator, idValidator } = require('../middlewa
 router.get('/', getUsers);
 router.get('/me', getCurrentUser);
 
-router.get('/:userId', idValidator, getUserById);
+router.get('/:id', idValidator, getUserById);
 
 router.patch('/me', userInfoValidator, updateProfile);
 

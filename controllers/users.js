@@ -25,9 +25,8 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((user) => {
       if (user) {
         res.send(user);
-      } else {
-        throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
+      next(new NotFoundError('Пользователь по указанному _id не найден.'));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -40,13 +39,12 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.getUserById = (req, res, next) => {
-  User.findById(req.params.userId, { __v: 0 })
+  User.findById(req.params.id, { __v: 0 })
     .then((user) => {
       if (user) {
         res.send(user);
-      } else {
-        throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
+      next(new NotFoundError('Пользователь по указанному _id не найден.'));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
