@@ -1,9 +1,11 @@
 const express = require('express');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const mongoose = require('mongoose');
 
 const app = express();
+
+const cors = require('cors');
 
 const { errors } = require('celebrate');
 const usersRoutes = require('./routes/users');
@@ -24,10 +26,15 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(express.json());
 
+app.use(cors({
+  origin: 'https://mesto-ermolova.nomoredomains.monster',
+  credentials: true,
+}));
+
 app.use(requestLogger);
 
-app.post('/signin', loginValidator, login);
-app.post('/signup', registrationValidator, createUser);
+app.post('/sign-in', loginValidator, login);
+app.post('/sign-up', registrationValidator, createUser);
 
 app.use(auth);
 

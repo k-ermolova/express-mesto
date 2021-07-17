@@ -9,7 +9,7 @@ module.exports.registrationValidator = celebrate({
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().custom(
       (value, helpers) => {
-        if (validator.isUrl(value, {
+        if (validator.isURL(value, {
           require_protocol: true,
         })) {
           return value;
@@ -38,7 +38,7 @@ module.exports.avatarValidator = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().required().custom(
       (value, helpers) => {
-        if (validator.isUrl(value, {
+        if (validator.isURL(value, {
           require_protocol: true,
         })) {
           return value;
@@ -60,7 +60,7 @@ module.exports.cardValidator = celebrate({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().required().custom(
       (value, helpers) => {
-        if (validator.isUrl(value, {
+        if (validator.isURL(value, {
           require_protocol: true,
         })) {
           return value;
