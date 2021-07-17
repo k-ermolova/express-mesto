@@ -33,6 +33,12 @@ app.use(cors({
 
 app.use(requestLogger);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/sign-in', loginValidator, login);
 app.post('/sign-up', registrationValidator, createUser);
 
