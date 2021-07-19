@@ -10,6 +10,7 @@ const ConflictError = require("../errors/conflict-err");
 
 const MONGO_DUPLICATE_ERROR_CODE = 11000;
 const SALT_ROUNDS = 10;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUsers = (req, res, next) => {
   User.find({}, { __v: 0 })
